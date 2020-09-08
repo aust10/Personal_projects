@@ -3,6 +3,12 @@ import NavBar from './components/navbar'
 import Counters from './components/counters'
 import './App.css'
 
+const  = () => {
+  return (  );
+}
+ 
+export default ;
+export default ;
 class App extends Component {
   constructor(props) {
     super(props)
