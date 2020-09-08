@@ -1,0 +1,17 @@
+{
+  "tagline": "This is a hello world app",
+  "details": "This is my first try",
+  "repository": "",
+  "whatsNew": "",
+  "support": {
+    "email": {
+      "address": ""
+    },
+    "issues": {
+      "url": ""
+    },
+    "community": {
+      "url": ""
+    }
+  }
+}
