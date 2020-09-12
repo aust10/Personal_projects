@@ -4,6 +4,8 @@ export function createTicketStore () {
   return {
     tickets: [],
     workingTickets: [],
+    error: null,
+    errorInfo: null,
     addTicket (title, priority, text) {
       this.tickets.push({
         title, priority, text, id: nanoid()

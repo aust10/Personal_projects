@@ -5,7 +5,7 @@ function Main (props) {
   const { history } = props
   return (
     <div>
-      <Button onClick={() => history.push('/Settings')}>Back</Button>
+      <Button data-testid='button' onClick={() => history.push('/Settings')}>Back</Button>
       <h1>Main sub section of Setting</h1>
     </div>
   )

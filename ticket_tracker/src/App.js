@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Breadcrum from './components/Breadcrumb'
-import Home from './components/Home'
-import TicketList from './components/TicketList'
-import Settings from './components/Settings'
-import About from './components/About'
-import Main from './components/Main'
+import Breadcrum from './components/Breadcrumb/Breadcrumb'
+import Home from './components/Home/Home'
+import TicketList from './components/TicketList/TicketList'
+import Settings from './components/Settings/Settings'
+import About from './components/Settings/About'
+import Main from './components/Settings/Main'
 
 function App () {
   // const ticketStore = useTicketStore()

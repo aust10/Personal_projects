@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useTicketStore } from '../store/StoreContext'
+import { useTicketStore } from '../../store/StoreContext'
 import TextField from '@material-ui/core/TextField'
 import { MenuItem, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'

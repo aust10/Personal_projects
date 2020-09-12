@@ -1,6 +1,6 @@
 import React from 'react'
 import { useObserver } from 'mobx-react'
-import { useTicketStore } from '../store/StoreContext'
+import { useTicketStore } from '../../store/StoreContext'
 
 function WorkingTicketList () {
   const ticketStore = useTicketStore()
