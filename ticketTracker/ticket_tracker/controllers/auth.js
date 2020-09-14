@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken')
+const User = require('../models/User')
 
 const express = require('express')
-const User = require('../models/User')
 const router = express.Router()
 
 router.post('/signUp', (req, res) => {
+  console.log(req.body)
   User.findOne({ email: req.body.email }, async (err, userExist) => {
     if (err) return res.status(500).send(err)
     if (userExist) return res.status(400).send({
@@ -20,6 +21,8 @@ router.post('/signUp', (req, res) => {
       token,
       currentUser: user
     })
-    res.status(201).send(user.sanatize())
+    res.status(201).send(user.sanitize())
   })
 })
+
+module.exports = router

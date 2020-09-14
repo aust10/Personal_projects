@@ -33,7 +33,7 @@ userSchema.statics.signUp = async function (email, password) {
   return user
 }
 
-userSchema.methods.hashPassword = (plainText) => {
+userSchema.methods.hashPassword = function (plainText) {
   this.password = bcrypt.hashSync(plainText, 4)
 }
 

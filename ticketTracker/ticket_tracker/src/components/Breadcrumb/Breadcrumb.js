@@ -5,6 +5,9 @@ import HomeIcon from '@material-ui/icons/Home'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles, emphasize, Chip, Link } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
+import { useObserver } from 'mobx-react'
+import { useTicketStore } from '../../store/StoreContext'
+
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -40,7 +43,9 @@ const Breadcrumb = (props) => {
 
   // const pathnames = pathname.split('/').filter(x => x)
   console.log(location)
-  return (
+  const ticketStore = useTicketStore()
+  console.log(ticketStore.currentUser)
+  return useObserver(() => (
     <div>
       <Breadcrubs style={styles.breadcrumb} aria-lable='My Tasks'>
         <StyledBreadcrumb
@@ -59,9 +64,10 @@ const Breadcrumb = (props) => {
           label='Settings'
           onClick={() => history.push('/Settings')}
         />
+        <h1>{`Welcome${ticketStore.currentUser}`}</h1>
       </Breadcrubs>
     </div>
-  )
+  ))
 }
 
 export default withRouter(Breadcrumb)

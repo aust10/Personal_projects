@@ -1,12 +1,35 @@
+
 import { nanoid } from 'nanoid'
 
 export function createTicketStore () {
   return {
+    loggedIn: false,
     tickets: [],
     workingTickets: [],
     deletedTickets: [],
+    currentUser: null,
     error: null,
     errorInfo: null,
+    login (email, password) {
+      console.log(email, password, 'check it out')
+      fetch(
+        '/signUp',
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            password: password
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // need to work on getting what is needed into the store ie token for fetches and name for headers
+          this.loggedIn = true
+          this.currentUser = data
+          console.log(this.currentUser)
+        })
+    },
     addTicket (title, priority, text) {
       this.tickets.push({
         title, priority, text, id: nanoid()
