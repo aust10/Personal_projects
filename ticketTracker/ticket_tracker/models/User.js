@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const { List } = require('@material-ui/core')
 
 const { Schema } = mongoose
 
 const userSchema = Schema({
-  first_name: {
+  firstName: {
     type: String,
     required: false
   },
-  last_name: {
+  lastName: {
     type: String,
     required: false
   },
@@ -23,18 +24,22 @@ const userSchema = Schema({
   }
 })
 
-userSchema.statics.signUp = async function (email, password) {
+userSchema.statics.signUp = async function (email, password, firstName, lastName) {
   const user = new this()
   user.email = email
   user.hashPassword(password)
-  user.first_name = null
-  user.last_name = null
+  user.firstName = firstName
+  user.lastName = lastName
   await user.save()
   return user
 }
 
 userSchema.methods.hashPassword = function (plainText) {
   this.password = bcrypt.hashSync(plainText, 4)
+}
+
+userSchema.methods.comparePassword = function (plainText) {
+  return bcrypt.compareSync(this.password, plainText)
 }
 
 userSchema.methods.sanitize = function () {

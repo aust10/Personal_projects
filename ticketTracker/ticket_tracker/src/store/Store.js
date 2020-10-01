@@ -3,17 +3,38 @@ import { nanoid } from 'nanoid'
 
 export function createTicketStore () {
   return {
-    loggedIn: false,
+    loggedIn: true,
     tickets: [],
     workingTickets: [],
     deletedTickets: [],
     currentUser: null,
     error: null,
     errorInfo: null,
-    login (email, password) {
+    signUp (email, password, firstName, lastName) {
       console.log(email, password, 'check it out')
       fetch(
         '/signUp',
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            firstName: firstName,
+            lastName: lastName
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // need to work on getting what is needed into the store ie token for fetches and name for headers
+          this.loggedIn = true
+          this.currentUser = data
+          console.log('you got here')
+        })
+    },
+    login (email, password) {
+      fetch(
+        '/login',
         {
           method: 'post',
           headers: { 'Content-Type': 'application/json' },
@@ -24,11 +45,20 @@ export function createTicketStore () {
         })
         .then(response => response.json())
         .then(data => {
-          // need to work on getting what is needed into the store ie token for fetches and name for headers
+          console.log(data)
           this.loggedIn = true
-          this.currentUser = data
-          console.log(this.currentUser)
+          this.currentUser = data.currentUser
+          this.token = data.token
         })
+    },
+    logOut () {
+      this.loggedIn = false
+      this.tickets = []
+      this.workingTickets = []
+      this.deletedTickets = []
+      this.currentUser = null
+      this.error = null
+      this.errorInfo = null
     },
     addTicket (title, priority, text) {
       this.tickets.push({
@@ -64,6 +94,23 @@ export function createTicketStore () {
           console.log(this.workingTickets, this.deletedTickets)
         }
       })
+    },
+    UpdateCurrentUser (firstName, lastName) {
+      fetch('/updateUser',
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: this.currentUser._id,
+            firstName: firstName,
+            lastName: lastName
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          this.currentUser = data
+        })
     }
   }
 }

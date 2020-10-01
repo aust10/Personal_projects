@@ -64,7 +64,11 @@ const Breadcrumb = (props) => {
           label='Settings'
           onClick={() => history.push('/Settings')}
         />
-        <h1>{`Welcome${ticketStore.currentUser}`}</h1>
+        <StyledBreadcrumb
+          data-testId='LogOut'
+          label='Log Out'
+          onClick={() => ticketStore.logOut()}
+        />
       </Breadcrubs>
     </div>
   ))

@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const path = require('path')
 
 const AuthController = require('./ticket_tracker/controllers/auth')
+const ProtectedController = require('./ticket_tracker/controllers/protected')
 
 const http = require('http').createServer(app)
 const port = process.env.PORT || 8000
@@ -13,6 +14,7 @@ app.use(express.static(path.join(__dirname, 'ticket_tracket/build')))
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use('/', AuthController)
+app.use('/', ProtectedController)
 
 const connectDatabase = async (databaseName = 'ticketDB', hostname = 'localhost') => {
   const database = await mongoose.connect(process.env.MONGODB_URI || `mongodb://${hostname}/${databaseName}`,

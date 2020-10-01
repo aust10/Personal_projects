@@ -5,7 +5,6 @@ import Main from '../Main'
 import Settings from '../Settings'
 import { render, cleanup } from '@testing-library/react'
 
-
 afterEach(cleanup)
 
 // About / Main
@@ -18,7 +17,6 @@ it('Renders Back Button Correctly', () => {
   const { getByTestId } = render(<About />, <Main />)
   expect(getByTestId('button')).toHaveTextContent('Back')
 })
-
 
 // Settings
 it('Renders About Button Correctly', () => {

@@ -47,7 +47,7 @@ const useStyles = makeStyles({
 })
 
 const Home = (props) => {
-  const [active, setActive] = useState(true)
+  const [active, setActive] = useState(false)
   const styles = useStyles()
   const { history } = props
   return useObserver(() => (
@@ -65,13 +65,13 @@ const Home = (props) => {
               ? <Typography variant='h4' onClick={() => setActive(false)} className={styles.ticketListTitle} gutterBottom>
               Active Tickets
                 <Typography variant='h6'>
-              Click for working Tickets
+              Click for your working Tickets
                 </Typography>
             </Typography>
               : <Typography variant='h4' onClick={() => setActive(true)} className={styles.ticketListTitle} gutterBottom>
-              Working Tickets
+              Your Working Tickets
                 <Typography variant='h6'>
-              Click for active Tickets
+              Click for all active Tickets
                 </Typography>
             </Typography>}
           </Container>
