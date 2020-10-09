@@ -48,6 +48,7 @@ export function createTicketStore () {
           console.log(data)
           this.loggedIn = true
           this.currentUser = data.currentUser
+          this.workingTickets = data.currentUser.activeTickets
           this.token = data.token
         })
     },
@@ -64,6 +65,17 @@ export function createTicketStore () {
       this.tickets.push({
         title, priority, text, id: nanoid()
       })
+      fetch('/ticketSubmit',
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: title,
+            priority: priority,
+            text: text
+          })
+        }
+      )
     },
     removeTicket (id) {
       console.log(id, 'this is the test')
@@ -71,6 +83,7 @@ export function createTicketStore () {
         if (ticket.id === id) {
           console.log('yep')
           this.deletedTickets.splice(this.deletedTickets.indexOf(ticket), 1)
+          this.UpdateCurrentUser('', '', this.workingTickets)
           // this.deletedTickets = this.deletedTickets.filter(ticket => ticket.id !== id)
         }
       })
@@ -81,6 +94,7 @@ export function createTicketStore () {
       this.tickets.forEach(ticket => {
         if (ticket.id === id) {
           this.workingTickets.push(ticket)
+          this.UpdateCurrentUser('', '', ticket)
           this.tickets.splice(this.tickets.indexOf(ticket), 1)
         }
       })
@@ -103,7 +117,8 @@ export function createTicketStore () {
           body: JSON.stringify({
             id: this.currentUser._id,
             firstName: firstName,
-            lastName: lastName
+            lastName: lastName,
+            activeTickets: this.workingTickets
           })
         })
         .then(response => response.json())
@@ -111,6 +126,13 @@ export function createTicketStore () {
           console.log(data)
           this.currentUser = data
         })
+    },
+    GetTickets () {
+      fetch('getTickets',
+        {
+          method: 'get'
+        }
+      )
     }
   }
 }

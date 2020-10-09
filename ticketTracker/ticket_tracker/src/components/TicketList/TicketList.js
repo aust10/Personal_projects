@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useObserver } from 'mobx-react'
 import { useTicketStore } from '../../store/StoreContext'
 
 function TicketList (props) {
   const ticketStore = useTicketStore()
+
+  useEffect(() => {
+    ticketStore.GetTickets()
+  }, [])
   return useObserver(() => (
     <div>
       <ul>

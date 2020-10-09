@@ -21,6 +21,10 @@ const userSchema = Schema({
     type: String,
     required: true,
     unique: true
+  },
+  activeTickets: {
+    type: Array,
+    required: false
   }
 })
 

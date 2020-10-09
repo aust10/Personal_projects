@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const Ticket = require('../models/Ticket')
 
 const express = require('express')
 const router = express.Router()
@@ -11,9 +12,13 @@ router.post('/updateUser', (req, res) => {
 
   if (req.body.firstName !== '') objUpdate.firstName = req.body.firstName
   if (req.body.lastName !== '') objUpdate.lastName = req.body.lastName
-
+  let activeTickets = req.body.activeTickets
+  if (req.body.activeTickets !== []) objUpdate.activeTickets = activeTickets
   const updates = {
     $set: objUpdate
+    // $push: {
+    //   activeTickets: activeTickets
+    // }
   }
 
   User.updateOne({ _id: req.body.id }, updates, (err, user) => {
@@ -23,6 +28,26 @@ router.post('/updateUser', (req, res) => {
       if (err) return res.status(500).send(err)
       res.send(newuser)
     })
+  })
+})
+// working on this section
+router.post('/ticketSubmit', (req, res) => {
+  console.log(req.body)
+
+  Ticket.submit(req.body.title, req.body.priority, req.body.text)
+
+})
+router.get('/getTickets', (req, res) => {
+
+  Ticket.find({}, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      // need the res.send
+      console.log(data)
+    } else {
+      // need the res.send
+      console.log('no data to send')
+    }
   })
 })
 
