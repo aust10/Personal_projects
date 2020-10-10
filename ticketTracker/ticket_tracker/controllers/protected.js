@@ -37,15 +37,32 @@ router.post('/ticketSubmit', (req, res) => {
   Ticket.submit(req.body.title, req.body.priority, req.body.text)
 
 })
+
+router.post('/removeTicketFromAll', (req, res) => {
+  console.log(req.body.id, 'req.body')
+  Ticket.deleteOne({ _id: req.body.id }, (err, find) => {
+    if (err) return res.status(500).send(err)
+    console.log(find, 'find')
+    Ticket.find({}, async (err, data) => {
+      if (err) return res.status(500).send(err)
+      if (data) {
+        res.send(data)
+        console.log(data, 'no regets')
+      } else {
+        console.log('no data to send')
+      }
+    })
+  })
+})
+
 router.get('/getTickets', (req, res) => {
 
   Ticket.find({}, async (err, data) => {
     if (err) return res.status(500).send(err)
     if (data) {
-      // need the res.send
+      res.send(data)
       console.log(data)
     } else {
-      // need the res.send
       console.log('no data to send')
     }
   })

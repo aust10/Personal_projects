@@ -48,41 +48,66 @@ const useStyles = makeStyles({
 
 const Home = (props) => {
   const [active, setActive] = useState(false)
+  const ticketStore = useTicketStore()
   const styles = useStyles()
   const { history } = props
   return useObserver(() => (
     <Container maxWidth={false} className={styles.container}>
       <ErrorBoundary>
-        <Card className={styles.root}>
-          <Typography data-testid='title' className={styles.title} gutterBottom>
-          Ticket Form
-          </Typography>
-          <NewTicketForm />
-        </Card>
-        <Card className={styles.ticketList}>
-          <Container className={styles.ticketListTitleContainer}>
-            {active
-              ? <Typography variant='h4' onClick={() => setActive(false)} className={styles.ticketListTitle} gutterBottom>
+        {ticketStore.loggedIn
+          ? <>
+            <Card className={styles.root}>
+              <Typography data-testid='title' className={styles.title} gutterBottom>
+              Ticket Form
+              </Typography>
+              <NewTicketForm />
+            </Card>
+            <Card className={styles.ticketList}>
+              <Container className={styles.ticketListTitleContainer}>
+                <Typography variant='h4' onClick={() => setActive(true)} className={styles.ticketListTitle} gutterBottom>
               Active Tickets
-                <Typography variant='h6'>
-              Click for your working Tickets
+                  <Typography variant='h6'>
+                Loggin To see your Working Tickets
+                  </Typography>
                 </Typography>
-            </Typography>
-              : <Typography variant='h4' onClick={() => setActive(true)} className={styles.ticketListTitle} gutterBottom>
-              Your Working Tickets
-                <Typography variant='h6'>
-              Click for all active Tickets
-                </Typography>
-            </Typography>}
-          </Container>
-          {active
-            ? <Container>
-              <TicketList />
-            </Container>
-            : <Container>
-              <WorkingTicketList history={history} />
-            </Container>}
-        </Card>
+              </Container>
+              <Container>
+                <TicketList />
+              </Container>
+            </Card>
+          </>
+          : <>
+            <Card className={styles.root}>
+              <Typography data-testid='title' className={styles.title} gutterBottom>
+              Ticket Form
+              </Typography>
+              <NewTicketForm />
+            </Card>
+            <Card className={styles.ticketList}>
+              <Container className={styles.ticketListTitleContainer}>
+                {active
+                  ? <Typography variant='h4' onClick={() => setActive(false)} className={styles.ticketListTitle} gutterBottom>
+                  Your Working Tickets
+                    <Typography variant='h6'>
+                  Click for all active Tickets
+                    </Typography>
+                  </Typography>
+                  : <Typography variant='h4' onClick={() => setActive(true)} className={styles.ticketListTitle} gutterBottom>
+                  Active Tickets
+                    <Typography variant='h6'>
+                  Click for your working Tickets
+                    </Typography>
+                  </Typography>}
+              </Container>
+              {active
+                ? <Container>
+                  <WorkingTicketList history={history} />
+                  </Container>
+                : <Container>
+                  <TicketList />
+                  </Container>}
+            </Card>
+            </>}
       </ErrorBoundary>
     </Container>
   ))

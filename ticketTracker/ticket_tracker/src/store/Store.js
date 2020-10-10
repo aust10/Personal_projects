@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid'
 export function createTicketStore () {
   return {
     loggedIn: true,
+    loginCheck: true,
     tickets: [],
     workingTickets: [],
     deletedTickets: [],
@@ -28,6 +29,7 @@ export function createTicketStore () {
         .then(data => {
           // need to work on getting what is needed into the store ie token for fetches and name for headers
           this.loggedIn = true
+          this.loginCheck = false
           this.currentUser = data
           console.log('you got here')
         })
@@ -45,26 +47,29 @@ export function createTicketStore () {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
-          this.loggedIn = true
+          // console.log(data)
+          this.loggedIn = false
+          this.loginCheck = true
           this.currentUser = data.currentUser
           this.workingTickets = data.currentUser.activeTickets
           this.token = data.token
         })
     },
+    changeLogin () {
+      this.loginCheck = false
+    },
     logOut () {
-      this.loggedIn = false
+      this.loggedIn = true
       this.tickets = []
       this.workingTickets = []
       this.deletedTickets = []
       this.currentUser = null
       this.error = null
       this.errorInfo = null
+      this.loggedIn = true
+      this.loginCheck = true
     },
     addTicket (title, priority, text) {
-      this.tickets.push({
-        title, priority, text, id: nanoid()
-      })
       fetch('/ticketSubmit',
         {
           method: 'post',
@@ -76,11 +81,11 @@ export function createTicketStore () {
           })
         }
       )
+        .then(this.GetTickets())
     },
     removeTicket (id) {
-      console.log(id, 'this is the test')
       this.deletedTickets.forEach(ticket => {
-        if (ticket.id === id) {
+        if (ticket._id === id) {
           console.log('yep')
           this.deletedTickets.splice(this.deletedTickets.indexOf(ticket), 1)
           this.UpdateCurrentUser('', '', this.workingTickets)
@@ -89,23 +94,32 @@ export function createTicketStore () {
       })
     },
     addToWorking (id) {
-      console.log(id)
-      console.log(this.tickets, 'tickets')
       this.tickets.forEach(ticket => {
-        if (ticket.id === id) {
+        if (ticket._id === id) {
           this.workingTickets.push(ticket)
           this.UpdateCurrentUser('', '', ticket)
+          fetch('/removeTicketFromAll',
+            {
+              method: 'post',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                id: ticket._id
+              })
+            }
+          )
+            .then(response => response.json())
+            .then(data => {
+              this.tickets = data
+            })
           this.tickets.splice(this.tickets.indexOf(ticket), 1)
         }
       })
     },
     removeWorkingTicket (id) {
-      console.log('working')
       this.workingTickets.forEach(ticket => {
-        if (ticket.id === id) {
+        if (ticket._id === id) {
           this.deletedTickets.push(ticket)
-          this.workingTickets = this.workingTickets.filter(ticket => ticket.id !== id)
-          console.log(this.workingTickets, this.deletedTickets)
+          this.workingTickets = this.workingTickets.filter(ticket => ticket._id !== id)
         }
       })
     },
@@ -123,7 +137,6 @@ export function createTicketStore () {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
           this.currentUser = data
         })
     },
@@ -133,6 +146,10 @@ export function createTicketStore () {
           method: 'get'
         }
       )
+        .then(response => response.json())
+        .then(data => {
+          this.tickets = data
+        })
     }
   }
 }

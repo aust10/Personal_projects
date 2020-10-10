@@ -7,7 +7,7 @@ import { withStyles, emphasize, Chip, Link } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
 import { useObserver } from 'mobx-react'
 import { useTicketStore } from '../../store/StoreContext'
-
+import SignUp from '../SignUp/SignUp'
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -42,9 +42,7 @@ const Breadcrumb = (props) => {
   // const { pathname } = location/
 
   // const pathnames = pathname.split('/').filter(x => x)
-  console.log(location)
   const ticketStore = useTicketStore()
-  console.log(ticketStore.currentUser)
   return useObserver(() => (
     <div>
       <Breadcrubs style={styles.breadcrumb} aria-lable='My Tasks'>
@@ -64,18 +62,24 @@ const Breadcrumb = (props) => {
           label='Settings'
           onClick={() => history.push('/Settings')}
         />
-        <StyledBreadcrumb
-          data-testId='LogOut'
-          label='Log Out'
-          onClick={() => ticketStore.logOut()}
-        />
+        {ticketStore.loggedIn
+          ? <StyledBreadcrumb
+            data-testId='LogOut'
+            label='Log in'
+            onClick={() => ticketStore.changeLogin()}
+          />
+          : <StyledBreadcrumb
+            data-testId='LogOut'
+            label='Log Out'
+            onClick={() => ticketStore.logOut()}
+          />}
+
       </Breadcrubs>
     </div>
   ))
 }
 
 export default withRouter(Breadcrumb)
-
 
 // Extra stuff not needed at the moment
 

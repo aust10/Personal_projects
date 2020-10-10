@@ -12,12 +12,11 @@ import SignUp from '../src/components/SignUp/SignUp'
 import { useTicketStore } from '../src/store/StoreContext'
 import { useObserver } from 'mobx-react'
 
-
 function App () {
   const ticketStore = useTicketStore()
   return useObserver(() => (
     <div className='App'>
-      {ticketStore.loggedIn
+      {ticketStore.loginCheck
         ? <>
           <Breadcrum />
           <Switch>
