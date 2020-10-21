@@ -6,6 +6,7 @@ import TicketList from './components/TicketList/TicketList'
 import Settings from './components/Settings/Settings'
 import About from './components/Settings/About'
 import Main from './components/Settings/Main'
+import Footer from './components/Footer/Footer'
 import DeletedTicket from './components/WorkingTickets/DeletedTicket'
 import WorkingTicketList from './components/WorkingTickets/WorkingTicketList'
 import SignUp from '../src/components/SignUp/SignUp'
@@ -14,8 +15,14 @@ import { useObserver } from 'mobx-react'
 
 function App () {
   const ticketStore = useTicketStore()
+  const styles = {
+    home: {
+      backgroundColor: '#fff0cf',
+      minHeight: '100vh'
+    }
+  }
   return useObserver(() => (
-    <div className='App'>
+    <div className='App' style={styles.home}>
       {ticketStore.loginCheck
         ? <>
           <Breadcrum />
@@ -44,6 +51,7 @@ function App () {
               render={props => <DeletedTicket {...props} />}
             />
           </Switch>
+          <Footer />
         </>
         : <SignUp />}
     </div>

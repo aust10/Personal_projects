@@ -1,7 +1,20 @@
 import React, { useState } from 'react'
-import { Button, TextField } from '@material-ui/core'
+import { Button, makeStyles, TextField } from '@material-ui/core'
 import { useTicketStore } from '../../store/StoreContext'
 import { useObserver } from 'mobx-react'
+
+const useStyles = makeStyles({
+  inputs: {
+    textAlign: 'center'
+  },
+  btn: {
+    padding: '15px 14px',
+    marginLeft: 5
+  },
+  box: {
+    marginRight: 5
+  }
+})
 
 function About (props) {
   const { history } = props
@@ -9,6 +22,7 @@ function About (props) {
     firstName: '',
     lastName: ''
   })
+  const styles = useStyles()
 
   const ticketStore = useTicketStore()
 
@@ -25,11 +39,12 @@ function About (props) {
     <>
       <div>
         <Button data-testid='button' onClick={() => history.push('/Settings')}>Back</Button>
-        <h1>Update User</h1>
       </div>
-      <div>
+      <div className={styles.inputs}>
+        <h1>Update User</h1>
         <TextField
           id='outlined-basic'
+          className={styles.box}
           label={ticketStore.currentUser.firstName}
           name='firstName'
           value={name.firstName}
@@ -47,6 +62,7 @@ function About (props) {
           onChange={updateName}
         />
         <Button
+          className={styles.btn}
           onClick={() => ticketStore.UpdateCurrentUser(name.firstName, name.lastName)}
           variant='outlined'
         >Submit
