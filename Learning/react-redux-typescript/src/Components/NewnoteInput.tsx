@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
 
+// add typescript
 interface NewNoteInputProps {
   addNote(note: string): void
 }

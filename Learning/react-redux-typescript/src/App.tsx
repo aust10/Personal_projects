@@ -11,13 +11,22 @@ function App () {
   const onaddNote = (note:string) => {
     dispatch(addNote(note))
   }
+
+  const onDeleteClick = (note:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log(notes)
+    console.log((note.target as HTMLInputElement).value)
+    const changeVal = (note.target as HTMLInputElement).value
+    notes.splice(notes.indexOf(changeVal), 1)
+    console.log(notes)
+    dispatch(addNote(notes))
+  }
   return (
     <>
       <NewNoteInput addNote={onaddNote} />
       <hr />
       <ul>
         {notes.map((note) => {
-          return <li key={note}>{note}</li>
+          return <li key={note}>{note} <button value={note} onClick={(note) => onDeleteClick(note)}>Delete</button></li>
         })}
       </ul>
     </>

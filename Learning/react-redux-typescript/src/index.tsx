@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux'
+// add the provider and the store.
 import { Store } from '../src/Store/Store'
 
 ReactDOM.render(
